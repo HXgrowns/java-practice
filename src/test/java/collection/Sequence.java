@@ -1,6 +1,7 @@
 package collection;
 
 import java.util.Iterator;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Sequence implements Iterable<Integer> {
@@ -8,7 +9,9 @@ public class Sequence implements Iterable<Integer> {
     private final Integer end;
 
     public Sequence(Integer start, Integer end) {
-        if (start >= end) { throw new IllegalArgumentException("Start must be smaller than End."); }
+        if (start >= end) {
+            throw new IllegalArgumentException("Start must be smaller than End.");
+        }
         this.start = start;
         this.end = end;
     }
@@ -26,7 +29,11 @@ class SequenceIterator implements Iterator<Integer> {
     SequenceIterator(Integer start, Integer end) {
         // TODO: please implements the following code to pass the test
         // <--start
-        throw new NotImplementedException();
+        if (start >= end) {
+            throw new IllegalArgumentException("Start must be smaller than End.");
+        }
+        this.current = start;
+        this.end = end;
         // --end-->
     }
 
@@ -34,7 +41,7 @@ class SequenceIterator implements Iterator<Integer> {
     public boolean hasNext() {
         // TODO: please implements the following code to pass the test
         // <--start
-        throw new NotImplementedException();
+        return this.current <= this.end - 1;
         // --end-->
     }
 
@@ -42,7 +49,7 @@ class SequenceIterator implements Iterator<Integer> {
     public Integer next() {
         // TODO: please implements the following code to pass the test
         // <--start
-        throw new NotImplementedException();
+        return this.current++;
         // --end-->
     }
 }
