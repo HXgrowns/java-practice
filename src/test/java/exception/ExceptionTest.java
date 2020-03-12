@@ -2,6 +2,7 @@ package exception;
 
 import java.util.ArrayList;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -10,40 +11,39 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ExceptionTest {
 
-  @Test
-  void should_use_the_try_pattern() {
-    ClosableStateReference closableStateReference = new ClosableStateReference();
-    try (MyClosableType closable = new MyClosableType(closableStateReference))
-    {
-      assertFalse(closable.isClosed());
+    @Test
+    void should_use_the_try_pattern() {
+        ClosableStateReference closableStateReference = new ClosableStateReference();
+        try (MyClosableType closable = new MyClosableType(closableStateReference)) {
+            assertFalse(closable.isClosed());
+        }
+
+        // TODO: please modify the following code to pass the test
+        final Optional<Boolean> expected = Optional.of(true);
+
+        assertEquals(expected.get(), closableStateReference.isClosed());
     }
 
-    // TODO: please modify the following code to pass the test
-    final Optional<Boolean> expected = Optional.empty();
+    @Test
+    void should_stop_closing_if_exception_occurred_beforehand() throws Exception {
+        ArrayList<String> logger = new ArrayList<>();
 
-    assertEquals(expected.get(), closableStateReference.isClosed());
-  }
+        try {
+            try (AutoCloseable withoutThrow = new ClosableWithoutException(logger);
+                 AutoCloseable withThrow = new ClosableWithException(logger)) {
+            }
+        } catch (Exception e) {
+            // It is okay!
+        }
 
-  @Test
-  void should_stop_closing_if_exception_occurred_beforehand() throws Exception {
-    ArrayList<String> logger = new ArrayList<>();
+        // TODO: please modify the following code to pass the test
+        // <--start
+        final String[] expected = {"ClosableWithException.close", "ClosableWithoutException.close"};
+        // --end-->
 
-    try {
-      try (AutoCloseable withoutThrow = new ClosableWithoutException(logger);
-          AutoCloseable withThrow = new ClosableWithException(logger)) {
-      }
-    } catch (Exception e) {
-      // It is okay!
+        assertArrayEquals(
+                expected,
+                logger.toArray());
     }
-
-    // TODO: please modify the following code to pass the test
-    // <--start
-    final String[] expected = null;
-    // --end-->
-
-    assertArrayEquals(
-        expected,
-        logger.toArray());
-  }
 
 }
